@@ -1,0 +1,31 @@
+<h1>{{ doc.codeName }} ({{ doc.outputPath }})</h1>
+<p>{{ doc.description }}</p>
+
+{%- if doc.params %}
+<h2>Params</h2>
+<ul>
+{%- for param in doc.params %}
+  <li>
+    <strong>{{ param.name }}</strong> { {{ param.typeList }} } - {{ param.description }}
+  </li>
+{%- endfor %}
+</ul>
+{%- endif %}
+
+{%- if doc.returns %}
+<h2>Returns</h2>
+<p>
+  { {{ doc.returns.typeList }} } - {{ doc.returns.description }}
+</p>
+{%- endif %}
+
+<ul>
+  {% for key1, value1 in doc %}
+     <li>{{ key1 }}: {{ value1 }}</li>
+     <ul>
+      {% for key2, value2 in value1 %}
+         <li>{{ key2 }}: {{ value2 }}</li>
+      {% endfor %}
+    </ul>
+  {% endfor %}
+</ul>
