@@ -1,7 +1,7 @@
 // Canonical path provides a consistent path (i.e. always forward slashes) across different OSes
-var path = require('canonical-path');
-
-var Package = require('dgeni').Package;
+import * as path from 'canonical-path';
+import { composeAngularDocs } from './processors/composeAngularDocs';
+import { Package } from 'dgeni';
 
 // Create and export a new Dgeni package called dgeni-example. This package depends upon
 // the jsdoc and nunjucks packages defined in the dgeni-packages npm module.
@@ -10,9 +10,11 @@ module.exports = new Package('dgeni-example', [
   require('dgeni-packages/nunjucks')
 ])
 
+.processor(composeAngularDocs)
+
 // Configure our dgeni-example package. We can ask the Dgeni dependency injector
 // to provide us with access to services and processors that we wish to configure
-.config(function(
+.config((
   log,
   readFilesProcessor,
   templateFinder,
@@ -20,7 +22,7 @@ module.exports = new Package('dgeni-example', [
   readTypeScriptModules,
   computePathsProcessor,
   EXPORT_DOC_TYPES
-) {
+) => {
 
   const MODULES_DOCS_PATH = 'partials/modules';
 
