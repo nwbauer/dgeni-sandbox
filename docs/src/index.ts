@@ -25,6 +25,7 @@ module.exports = new Package('dgeni-example', [
 ) => {
 
   const MODULES_DOCS_PATH = 'partials/modules';
+  const basePath = path.resolve(__dirname, '../..');
 
   computePathsProcessor.pathTemplates.push({
     docTypes: ['module'],
@@ -42,7 +43,7 @@ module.exports = new Package('dgeni-example', [
   log.level = 'info';
 
   // Specify the base path used when resolving relative paths to source and output files
-  readFilesProcessor.basePath = path.resolve(__dirname, '..');
+  readFilesProcessor.basePath = basePath;
 
   // Specify collections of source files that should contain the documentation to extract
   readFilesProcessor.sourceFiles = [
@@ -53,7 +54,7 @@ module.exports = new Package('dgeni-example', [
   ];
 
   // Specify the base path used when resolving relative paths to source and output files
-  readTypeScriptModules.basePath = path.resolve(__dirname, '..');
+  readTypeScriptModules.basePath = basePath;
 
   readTypeScriptModules.sourceFiles = [
     {
