@@ -1,0 +1,22 @@
+<h1>Angular Component{{ doc.codeName }} ({{ doc.outputPath }})</h1>
+<p>{{ doc.description }}</p>
+
+{%- if doc.decorators %}
+<ul>
+{%- for decorator in doc.decorators %}
+<li><strong>{{ decorator.name }}</strong></li>
+{%- endfor %}
+</ul>
+{%- endif %}
+
+{%- if doc.constructorDoc %}
+<p>Has a constructor!</p>
+{%- endif %}
+
+{%- if doc.members %}
+<ul>
+{%- for member in doc.members %}
+<li>{%- include "member.template.html" -%}</li>
+{%- endfor %}
+</ul>
+{%- endif %}
