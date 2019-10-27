@@ -72,5 +72,5 @@ module.exports = new Package('dgeni-example', [
   templateFinder.templatePatterns.unshift('<%= doc.docType %>.template.html');
 
   // Specify where the writeFilesProcessor will write our generated doc files
-  writeFilesProcessor.outputFolder  = 'build';
+  writeFilesProcessor.outputFolder  = 'docs/build';
 });
