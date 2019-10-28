@@ -2,6 +2,7 @@ import { Processor, DocCollection, Document } from 'dgeni';
 import { ClassExportDoc } from 'dgeni-packages/typescript/api-doc-types/ClassExportDoc';
 import { AngularComponentDoc } from '../api-doc-types/angularComponentDoc';
 import { AngularServiceDoc } from '../api-doc-types/angularServiceDoc';
+import { AngularModuleDoc } from '../api-doc-types/angularModuleDoc';
 import { MemberDoc } from 'dgeni-packages/typescript/api-doc-types/MemberDoc';
 import { MethodMemberDoc } from 'dgeni-packages/typescript/api-doc-types/MethodMemberDoc';
 import { ParsedDecorator } from 'dgeni-packages/typescript/services/TsParser/getDecorators';
@@ -11,7 +12,10 @@ export function composeAngularDocs() {
   return new ComposeAngularDocs();
 }
 
-export type AngularDoc = AngularComponentDoc | AngularServiceDoc;
+export type AngularDoc =
+  AngularComponentDoc |
+  AngularServiceDoc |
+  AngularModuleDoc;
 
 export interface DocParseStrategy {
   canParse: (doc: ClassExportDoc) => boolean;
@@ -38,10 +42,10 @@ export class ComposeAngularDocs implements Processor {
       canParse: (doc: ClassExportDoc) => hasDecorator(doc, 'Injectable'),
       parse: (doc: ClassExportDoc) => this.parseAngularService(doc)
     },
-    // {
-    //   canParse: (doc: ClassExportDoc) => hasDecorator(doc, 'NgModule'),
-    //   parser: (doc: ClassExportDoc) => this.parseAngularService(doc)
-    // }
+    {
+      canParse: (doc: ClassExportDoc) => hasDecorator(doc, 'NgModule'),
+      parse: (doc: ClassExportDoc) => this.parseAngularModule(doc)
+    }
   ];
 
   $process(docs: DocCollection) {
@@ -55,7 +59,7 @@ export class ComposeAngularDocs implements Processor {
     });
   }
 
-  private parseAngularComponent(doc: Document): AngularComponentDoc {
+  private parseAngularComponent(doc: ClassExportDoc): AngularComponentDoc {
     const result = new AngularComponentDoc(
       doc.host,
       doc.moduleDoc,
@@ -84,7 +88,7 @@ export class ComposeAngularDocs implements Processor {
   }
 
 
-  private parseAngularService(doc: Document): AngularServiceDoc {
+  private parseAngularService(doc: ClassExportDoc): AngularServiceDoc {
     const result = new AngularServiceDoc(
       doc.host,
       doc.moduleDoc,
@@ -109,6 +113,16 @@ export class ComposeAngularDocs implements Processor {
       });
     }
 
+    return result;
+  }
+
+  private parseAngularModule(doc: ClassExportDoc): AngularModuleDoc {
+    const result = new AngularModuleDoc(
+      doc.host,
+      doc.moduleDoc,
+      doc.symbol,
+      doc.aliasSymbol
+    );
     return result;
   }
 }

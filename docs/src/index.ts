@@ -28,7 +28,8 @@ module.exports = new Package('dgeni-example', [
   const basePath = path.resolve(__dirname, '../..');
   const customDocTypes = [
     'angular-component',
-    'angular-service'
+    'angular-service',
+    'angular-module'
   ];
 
   customDocTypes.forEach((docType) => EXPORT_DOC_TYPES.push(docType));
